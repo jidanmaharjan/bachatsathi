@@ -1,9 +1,11 @@
+import Login from "./pages/Login";
 
 
 function App() {
   return (
-    <div>
-      hi
+    <div className="text-black min-h-screen w-full">
+     
+      <Login />
     </div>
   );
 }
