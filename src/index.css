@@ -10,3 +10,27 @@
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 5px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+    cursor: pointer;
+  }
