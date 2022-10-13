@@ -127,7 +127,7 @@ function getCookie(name) {
         </form>
 
         <p className="mt-4 text-center text-gray-500">
-          Not registered yet?<Link to='/register' className='hover:text-blue-400'> Click here to register</Link> 
+          Not registered yet? <Link to='/register' className='hover:underline text-blue-400'>Click here to register</Link> 
         </p>
       </div>
       )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { getProfile } from "../services/userApi";
 
 import { FiUsers } from "react-icons/fi";
@@ -16,9 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 
+import { getCookie } from "../components/getCookie";
+
 const Home = () => {
   const {user, isLoading, isError, isSuccess, message, profile,isAuthenticated } = useSelector(state=> state.user)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   let chartData = [
     { x: 2005, y: 28 },
@@ -32,29 +35,25 @@ const Home = () => {
 
   useEffect(()=>{
     if(!profile){
+      if(getCookie('token')){
       dispatch(getProfile())
     }
-    
+    }
+    setLoading(true)
     const timer = setTimeout(()=>{
       if(!isLoading){
         if(!isAuthenticated){
         navigate('/')
       }
       }
+      setLoading(false)
     },500)
     return () => clearTimeout(timer)
   
    
   },[])
 
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-  if(isLoading){
+  if(isLoading || loading){
     return (
       <Loader />
     )
