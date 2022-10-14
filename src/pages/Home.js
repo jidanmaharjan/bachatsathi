@@ -34,11 +34,7 @@ const Home = () => {
   ];
 
   useEffect(()=>{
-    if(!profile){
-      if(getCookie('token')){
-      dispatch(getProfile())
-    }
-    }
+    
     setLoading(true)
     const timer = setTimeout(()=>{
       if(!isLoading){
@@ -65,38 +61,38 @@ const Home = () => {
     
       
       
-        <div className=" p-4 mt-4">
+        <div className=" p-4 mt-4 mb-16 sm:mb-0">
           <h1 className="my-2 font-bold text-gray-600">SUMMARY</h1>
-          <div className="grid gap-4 grid-cols-5">
-            <div className="text-blue-400 bg-gray-100 p-4 rounded-md aspect-[4/3] ">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3  lg:grid-cols-5">
+            <div className="text-blue-400 bg-gray-100 p-4 col-span-2 md:col-span-1 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <GiReceiveMoney className="text-lg 2xl:text-2xl" />
               </div>
               <h3 className="text-gray-800 font-bold mt-2">Rs. 17059</h3>
               <p className="text-gray-500">Total Savings</p>
             </div>
-            <div className="text-blue-400 bg-gray-100 p-4 rounded-md aspect-[4/3] ">
+            <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <FaCoins className="text-lg 2xl:text-2xl" />
               </div>
               <h3 className="text-gray-800 font-bold mt-2">Rs. 1147</h3>
               <p className="text-gray-500">Total Profit</p>
             </div>
-            <div className="text-blue-400 bg-gray-100 p-4 rounded-md aspect-[4/3] ">
+            <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <FiUsers className="text-lg 2xl:text-2xl" />
               </div>
               <h3 className="text-gray-800 font-bold mt-2">16</h3>
               <p className="text-gray-500">Members</p>
             </div>
-            <div className="text-blue-400 bg-gray-100 p-4 rounded-md aspect-[4/3] ">
+            <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <AiOutlineWarning className="text-lg 2xl:text-2xl" />
               </div>
               <h3 className="text-gray-800 font-bold mt-2">Rs. 750</h3>
               <p className="text-gray-500">Total Fine</p>
             </div>
-            <div className="text-blue-400 bg-gray-100 p-4 rounded-md aspect-[4/3] ">
+            <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <GiPayMoney className="text-lg 2xl:text-2xl" />
               </div>
@@ -106,7 +102,7 @@ const Home = () => {
           </div>
           <div className="mt-4">
             <h1 className="my-2 font-bold text-gray-600">THIS MONTH</h1>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="text-blue-400 bg-gray-100 p-4 rounded-md ">
                 <div className="flex ">
                   <div className="p-4 rounded-full bg-blue-200  grid place-items-center">
@@ -118,7 +114,7 @@ const Home = () => {
                     <h3>October, 2022</h3>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 mt-4 ">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 ">
                   <div className="border border-gray-200 rounded-md p-4">
                     <p className="text-gray-500 my-2 text-center">
                       Time Details

@@ -11,17 +11,52 @@ import { getProfile, reset } from "./services/userApi";
 import Profile from "./pages/Profile";
 import PuffLoader from 'react-spinners/PuffLoader';
 import Notifications from "./pages/Notifications";
+import { getCookie } from "./components/getCookie";
+import { notificationToggle, settingToggle, sideToggle } from "./services/globals";
+import Botnav from "./components/Botnav";
+import { useState } from "react";
 
 function App() {
   const {pathname} = useLocation();
-  const {side } = useSelector(state=>state.globals)
+  const {side } = useSelector((state)=>state.globals)
 const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {user, isLoading, isError, isSuccess, message, profile } = useSelector(state=> state.user)
+  const {user, isLoading, isError, isSuccess, message, profile, isAuthenticated } = useSelector(state=> state.user)
+  const [screenSize, setScreenSize] = useState(0)
+
   useEffect(()=>{
+    if(!profile){
+      if(getCookie('token')){
+      dispatch(getProfile())
+    }
+    }
     
-    
+  },[isAuthenticated])
+
+  useEffect(()=>{
+    const hidepop = document.getElementById('mainarea')
+    hidepop.addEventListener('click', ()=>{
+      dispatch(notificationToggle(false))
+      dispatch(settingToggle(false))
+    })
+    hidepop.removeEventListener('click', ()=>{})
   },[])
+
+  useEffect(() =>{
+    const handleResize = () => setScreenSize(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return() => window.removeEventListener('resize', handleResize);
+  },[])
+
+  useEffect(()=>{
+    if(screenSize <= 640){
+      dispatch(sideToggle(false))
+    }
+    else{
+      dispatch(sideToggle(true))
+    }
+  },[screenSize])
   
   if(isLoading){
     return (
@@ -38,7 +73,9 @@ const dispatch = useDispatch()
       {!(pathname === '/' || pathname === '/register') && (<Sidenav />) }
       <div className={`${side && !(pathname === '/' || pathname === '/register') && 'ml-72 2xl:ml-80'} transition-all duration-300 ease-in-out w-full`}>
       {!(pathname === '/' || pathname === '/register') && (<Topnav />) }  
-     <Routes>
+      {!(pathname === '/' || pathname === '/register') && (<Botnav />) }
+      <div id='mainarea'>
+      <Routes>
       <Route path='/' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/home' element={<Home />} />
@@ -47,6 +84,8 @@ const dispatch = useDispatch()
       <Route path='/history' element={<Home />} />
       <Route path='/profile' element={<Profile />} />
      </Routes>
+      </div>
+    
      </div>
     </div>
     </div>

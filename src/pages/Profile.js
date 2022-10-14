@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import { getProfile } from "../services/userApi";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -20,9 +19,6 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!profile){
-      dispatch(getProfile())
-    }
     const timer = setTimeout(() => {
       if (!isLoading) {
         if (!isAuthenticated) {
@@ -33,19 +29,18 @@ const Profile = () => {
     return () => clearTimeout(timer);
   }, [isAuthenticated]);
 
-  console.log(profile);
 
   if (isLoading) {
     return <Loader />;
   }
 
   return (
-    <div className=" p-4 mt-4">
+    <div className=" p-4 mt-4 mb-16 sm:mb-0">
       <h1 className="my-2 font-bold text-gray-600">PROFILE</h1>
-      <div className="grid grid-cols-2 gap-4 align-items-center ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 align-items-center ">
         <div className="grid  bg-gray-100 rounded-md p-4 ">
           <div className="grid mx-auto w-full">
-            <p className="p-1 bg-blue-400 text-5xl w-40 h-40 flex justify-center items-center font-bold text-white rounded-full mx-auto">
+            <p className="p-1 bg-blue-400 text-5xl w-32 h-32 flex justify-center items-center font-bold text-white rounded-full mx-auto">
               {profile && profile.user.name.slice(0, 1)[0].toUpperCase()}
             </p>
             <button className="mt-4  bg-blue-400 text-gray-100 py-2 px-4 rounded-md">

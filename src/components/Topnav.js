@@ -8,21 +8,19 @@ import { BiLogOut} from 'react-icons/bi'
 import {CgProfile} from 'react-icons/cg'
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { searchTerm, sideToggle } from "../services/globals";
+import { notificationToggle, searchTerm, settingToggle, sideToggle } from "../services/globals";
 import { logout } from "../services/userApi";
 import { Link } from "react-router-dom";
 
 const Topnav = () => {
-    const {search } = useSelector((state)=> state.globals)
+    const {search, notification, setting, side } = useSelector((state)=> state.globals)
     const dispatch = useDispatch()
     const { profile } = useSelector(state=> state.user)
 
-    const [notification, setNotification] = useState(false)
-    const [settings, setSettings] = useState(false)
   return (
-    <div className="flex p-2 justify-between items-center w-full bg-gray-200 text-gray-600 2xl:text-lg">
-      <FaBars className="ml-4 cursor-pointer text-blue-400 2xl:text-xl" onClick={()=>dispatch(sideToggle())} />
-      <div className="flex w-30 items-center border border-blue-200 py-1 px-2 rounded-md">
+    <div className="flex sticky top-0 border-b border-gray-100 p-2 justify-end sm:justify-between items-center w-full bg-gray-200 text-gray-600 2xl:text-lg">
+      <FaBars className="ml-4 hidden sm:inline cursor-pointer text-blue-400 2xl:text-xl" onClick={()=>dispatch(sideToggle(!side))} />
+      <div className="hidden lg:flex w-30 items-center border border-blue-200 py-1 px-2 rounded-md">
         <input
           type="text"
           className="bg-inherit py-1 outline-none flex-grow w-80"
@@ -36,15 +34,15 @@ const Topnav = () => {
       <div className="flex items-center mr-8 ">
         <div className="mr-4 relative cursor-pointer" >
           <IoMdNotificationsOutline className="text-blue-400 text-xl 2xl:text-2xl" onClick={()=>{
-            setNotification(!notification)
-            setSettings(false)
+            dispatch(notificationToggle(!notification))
+            dispatch(settingToggle(false))
         }} />
           <GoPrimitiveDot className="absolute text-red-500 top-[-2px] right-[-4px]" onClick={()=>{
-            setNotification(!notification)
-            setSettings(false)
+            dispatch(notificationToggle(!notification))
+            dispatch(settingToggle(false))
         }} />
-          <div className={`${notification ? '': 'hidden'} z-20 transition-all ease-in-out duration-500 absolute bg-gray-100 right-[-14px] top-[38px] p-2 w-80 rounded-md border-x border-b`}>
-            <div className="absolute right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
+          <div className={`${notification ? '': 'hidden'} z-20 transition-all ease-in-out duration-500 absolute bg-gray-100 right-[-180px] sm:right-[-14px] top-[38px] p-2 w-80 rounded-md border-x border-b`}>
+            <div className="absolute right-44 sm:right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
             <p className="text-gray-500 font-semibold">Notifications</p>
             <div className="h-[1px] bg-gray-200 w-full"></div>
             <ul>
@@ -57,29 +55,29 @@ const Topnav = () => {
         </div>
         <div className="flex items-center cursor-pointer relative" >
           <p className="p-1 bg-blue-400 w-8 h-8 flex justify-center items-center font-bold text-white rounded-full mr-2" onClick={()=>{
-            setSettings(!settings)
-            setNotification(false)
+            dispatch(notificationToggle(false))
+            dispatch(settingToggle(!setting))
         }}>
             {profile && profile.user.name.slice(0,1)[0].toUpperCase()}
           </p>
           <p className="" onClick={()=>{
-            setSettings(!settings)
-            setNotification(false)
+            dispatch(notificationToggle(false))
+            dispatch(settingToggle(!setting))
         }}>
             Hello,<span className="font-semibold"> {profile && profile.user.name}</span>{" "}
           </p>
           <RiArrowDropDownLine size={20} onClick={()=>{
-            setSettings(!settings)
-            setNotification(false)
+            dispatch(notificationToggle(false))
+            dispatch(settingToggle(!setting))
         }} />
-          <div className={`${settings? '': 'hidden'} z-20 absolute bg-gray-100 right-0 top-[44px] p-2 w-40 rounded-md border-x border-b`} >
+          <div className={`${setting? '': 'hidden'} z-20 absolute bg-gray-100 right-0 top-[44px] p-2 w-40 rounded-md border-x border-b`} >
             <div className="absolute right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
             <p className="text-gray-500 font-semibold">Settings</p>
             <div className="h-[1px] bg-gray-200 w-full mb-2"></div>
             <div>
                 <Link to='/profile' className='flex items-center gap-2 py-2 px-2 hover:bg-gray-300 cursor-pointer rounded-md' onClick={()=>{
-            setSettings(!settings)
-            setNotification(false)
+            dispatch(notificationToggle(false))
+            dispatch(settingToggle(!setting))
         }}><CgProfile/> Profile</Link>
                 <Link to='/' className='flex items-center gap-2 py-2 px-2 hover:bg-gray-300 cursor-pointer rounded-md' onClick={()=>dispatch(logout())}><BiLogOut/> Logout</Link>
             </div>

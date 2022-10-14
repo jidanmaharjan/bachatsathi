@@ -32,13 +32,7 @@ const Register = () => {
     },[isSuccess])
 
     useEffect(()=>{
-      if(!profile){
-        if(getCookie('token')){
-        dispatch(getProfile())
-      }
-      }
-      
-     
+           
         if (!isLoading) {
           if (isAuthenticated) {
             navigate("/home");
@@ -46,11 +40,6 @@ const Register = () => {
         }
     },[isAuthenticated])
 
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    }
 
     useEffect(()=>{
       const timer = setTimeout(() => {

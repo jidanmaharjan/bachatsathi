@@ -28,13 +28,7 @@ const Login = () => {
 },[])
 
 useEffect(()=>{
-  if(!profile){
-    if(getCookie('token')){
-    dispatch(getProfile())
-  }
-  }
-  
- 
+   
     if (!isLoading) {
       if (isAuthenticated) {
         navigate("/home");
@@ -54,12 +48,6 @@ useEffect(()=>{
   
 },[isError])
 
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
-  
   const handleSubmit = (e) =>{
     e.preventDefault()
         const email = emailRef.current.value
