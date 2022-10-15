@@ -41,8 +41,8 @@ const Topnav = () => {
             dispatch(notificationToggle(!notification))
             dispatch(settingToggle(false))
         }} />
-          <div className={`${notification ? '': 'hidden'} z-20 transition-all ease-in-out duration-500 absolute bg-gray-100 right-[-180px] sm:right-[-14px] top-[38px] p-2 w-80 rounded-md border-x border-b`}>
-            <div className="absolute right-44 sm:right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
+          <div className={`${notification ? '': 'hidden'} z-20 transition-all ease-in-out duration-500 absolute bg-gray-100 right-[-180px] md:right-[-14px] top-[38px] p-2 w-80 rounded-md border-x border-b`}>
+            <div className="absolute right-44 md:right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
             <p className="text-gray-500 font-semibold">Notifications</p>
             <div className="h-[1px] bg-gray-200 w-full"></div>
             <ul>
@@ -64,7 +64,7 @@ const Topnav = () => {
             dispatch(notificationToggle(false))
             dispatch(settingToggle(!setting))
         }}>
-            Hello,<span className="font-semibold"> {profile && profile.user.name}</span>{" "}
+            Hello,<span className="font-semibold capitalize"> {profile && profile.user.name}</span>{" "}
           </p>
           <RiArrowDropDownLine size={20} onClick={()=>{
             dispatch(notificationToggle(false))

@@ -33,14 +33,6 @@ const dispatch = useDispatch()
     
   },[isAuthenticated])
 
-  useEffect(()=>{
-    const hidepop = document.getElementById('mainarea')
-    hidepop.addEventListener('click', ()=>{
-      dispatch(notificationToggle(false))
-      dispatch(settingToggle(false))
-    })
-    hidepop.removeEventListener('click', ()=>{})
-  },[])
 
   useEffect(() =>{
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -74,7 +66,10 @@ const dispatch = useDispatch()
       <div className={`${side && !(pathname === '/' || pathname === '/register') && 'ml-72 2xl:ml-80'} transition-all duration-300 ease-in-out w-full`}>
       {!(pathname === '/' || pathname === '/register') && (<Topnav />) }  
       {!(pathname === '/' || pathname === '/register') && (<Botnav />) }
-      <div id='mainarea'>
+      <div onClick={()=>{
+        dispatch(notificationToggle(false))
+        dispatch(settingToggle(false))
+      }}>
       <Routes>
       <Route path='/' element={<Login />} />
       <Route path='/register' element={<Register />} />
