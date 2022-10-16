@@ -6,6 +6,7 @@ import {CgProfile} from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../services/userApi'
 import { Link, NavLink } from 'react-router-dom'
+import { FiUsers } from 'react-icons/fi'
 
 const Sidenav = () => {
   const { side, search } = useSelector((state)=> state.globals)
@@ -19,8 +20,9 @@ const Sidenav = () => {
             <p className='text-gray-600'>NAVIGATION</p>
             <div className='py-2 text-gray-800 '>
                 <NavLink to='/home' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineHome  size={20} />Home</NavLink>
-                <NavLink to='dashboard' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineDashboard size={20}/>Dashboard</NavLink>
+                <NavLink to='/adminpanel' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineDashboard size={20}/>Admin Panel</NavLink>
                 <NavLink to='/notifications' className={({isActive})=>isActive?activeLink:inactiveLink}><BiNotification size={20}/>Notifications</NavLink>
+                <NavLink to='/members' className={({isActive})=>isActive?activeLink:inactiveLink}><FiUsers size={20}/>Members</NavLink>
                 <NavLink to='/history' className={({isActive})=>isActive?activeLink:inactiveLink}><BiHistory size={20}/>History</NavLink>
                 <NavLink to='/profile' className={({isActive})=>isActive?activeLink:inactiveLink}><CgProfile size={20}/>Profile</NavLink>
                 <NavLink to='/' className='flex items-center gap-2 my-2 py-2 px-2 w-full hover:bg-gray-300 cursor-pointer rounded-md' onClick={()=>dispatch(logout())}><BiLogOut size={20}/>Logout</NavLink>

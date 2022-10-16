@@ -34,19 +34,12 @@ const Home = () => {
   ];
 
   useEffect(()=>{
-    
-    setLoading(true)
-    const timer = setTimeout(()=>{
-      if(!isLoading){
-        if(!isAuthenticated){
+    if(!isLoading){
+      if(!getCookie('token')){
         navigate('/')
+        
       }
-      }
-      setLoading(false)
-    },500)
-    return () => clearTimeout(timer)
-  
-   
+  }
   },[])
 
   if(isLoading || loading){

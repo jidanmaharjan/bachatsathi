@@ -18,7 +18,7 @@ const Topnav = () => {
     const { profile } = useSelector(state=> state.user)
 
   return (
-    <div className="flex sticky top-0 border-b border-gray-100 p-2 justify-end sm:justify-between items-center w-full bg-gray-200 text-gray-600 2xl:text-lg">
+    <div className="flex sticky top-0 z-50 border-b border-gray-100 p-2 justify-end sm:justify-between items-center w-full bg-gray-200 text-gray-600 2xl:text-lg">
       <FaBars className="ml-4 hidden sm:inline cursor-pointer text-blue-400 2xl:text-xl" onClick={()=>dispatch(sideToggle(!side))} />
       <div className="hidden lg:flex w-30 items-center border border-blue-200 py-1 px-2 rounded-md">
         <input

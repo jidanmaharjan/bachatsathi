@@ -32,11 +32,17 @@ const getProfile = async() =>{
     return response.data
 }
 
+const getMembers = async() =>{
+    const response = await axios.get(baseUrl+'/members',{withCredentials: true})
+            return response.data
+}
+
 const authService = {
     register,
     login,
     logout,
-    getProfile
+    getProfile,
+    getMembers
 }
 
 export default authService

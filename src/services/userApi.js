@@ -4,7 +4,6 @@ import { baseUrl } from "../components/Apiurl"
 import authService from "./authService"
 
 //Get user from cookie
-const user = JSON.parse(localStorage.getItem("user"))
 
 const initialState ={
     user: null,
@@ -13,7 +12,8 @@ const initialState ={
     isLoading: false,
     isAuthenticated: false,
     message: '',
-    profile: null
+    profile: null,
+    members: null
 }
 
 //Register User
@@ -45,6 +45,19 @@ export const login = createAsyncThunk('user/login', async(user, thunkAPI)=>{
 export const getProfile = createAsyncThunk('user/profile', async(thunkAPI) =>{
     try {
         return await authService.getProfile()
+        
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Get Members
+export const getMembers = createAsyncThunk('user/members', async(thunkAPI)=>{
+    try {
+        return await authService.getMembers()
+        
+        
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -113,6 +126,7 @@ export const userApi = createSlice({
                 state.isAuthenticated = false
                 state.message = action.payload
             })
+            
             .addCase(logout.pending, (state)=>{
                 state.isLoading = true
             })
@@ -125,6 +139,20 @@ export const userApi = createSlice({
                 state.profile=null
             })
             .addCase(logout.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getMembers.pending, (state)=>{
+                state.isLoading = true
+
+            })
+            .addCase(getMembers.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.members = action.payload.members
+            })
+            .addCase(getMembers.rejected, (state, action)=>{
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

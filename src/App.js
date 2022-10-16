@@ -1,27 +1,36 @@
-import Login from "./pages/Login";
+//Primary imports
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+//Pages import 
+import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import Members from "./pages/Members";
+import Adminpanel from "./pages/Adminpanel";
+import History from "./pages/History";
+import Notifications from "./pages/Notifications";
+
+//Componenet imports
 import Sidenav from "./components/Sidenav";
 import Topnav from "./components/Topnav";
-
-import { useDispatch, useSelector } from "react-redux";
-import Register from "./pages/Register";
-import { useEffect } from "react";
-import { getProfile, reset } from "./services/userApi";
-import Profile from "./pages/Profile";
-import PuffLoader from 'react-spinners/PuffLoader';
-import Notifications from "./pages/Notifications";
 import { getCookie } from "./components/getCookie";
-import { notificationToggle, settingToggle, sideToggle } from "./services/globals";
 import Botnav from "./components/Botnav";
-import { useState } from "react";
+import Loader from './components/Loader';
+
+//state imports
+import { getProfile, reset } from "./services/userApi";
+import { notificationToggle, settingToggle, sideToggle } from "./services/globals";
+
 
 function App() {
   const {pathname} = useLocation();
   const {side } = useSelector((state)=>state.globals)
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {user, isLoading, isError, isSuccess, message, profile, isAuthenticated } = useSelector(state=> state.user)
+  const {user, isLoading, isError, isSuccess, message, profile, isAuthenticated } = useSelector((state)=> state.user)
   const [screenSize, setScreenSize] = useState(0)
 
   useEffect(()=>{
@@ -30,7 +39,6 @@ const dispatch = useDispatch()
       dispatch(getProfile())
     }
     }
-    
   },[isAuthenticated])
 
 
@@ -50,14 +58,7 @@ const dispatch = useDispatch()
     }
   },[screenSize])
   
-  if(isLoading){
-    return (
-      <div className="w-full min-h-screen flex justify-center items-center">
-         <PuffLoader color="#60a5fa" />
-      </div>
-    )
-   
-  }
+  
 
   return (
     <div className="text-black min-h-screen w-full">
@@ -74,9 +75,10 @@ const dispatch = useDispatch()
       <Route path='/' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/home' element={<Home />} />
-      <Route path='/dashboard' element={<Home />} />
+      <Route path='/adminpanel' element={<Adminpanel />} />
+      <Route path='/members' element={<Members />} />
       <Route path='/notifications' element={<Notifications />} />
-      <Route path='/history' element={<Home />} />
+      <Route path='/history' element={<History />} />
       <Route path='/profile' element={<Profile />} />
      </Routes>
       </div>
