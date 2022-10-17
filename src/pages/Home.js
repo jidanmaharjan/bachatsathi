@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getProfile } from "../services/userApi";
+import { getMembers, getProfile } from "../services/userApi";
 
 import { FiUsers } from "react-icons/fi";
 import { AiOutlineWarning } from "react-icons/ai";
@@ -8,7 +8,7 @@ import { GiReceiveMoney, GiPayMoney } from "react-icons/gi";
 import { GoUnverified } from "react-icons/go";
 import { BsCalendarCheck } from "react-icons/bs";
 import { MdOutlineDone, MdOutlineCancel, MdErrorOutline } from "react-icons/md";
-
+import moment from 'moment/moment';
 
 import graph from "../assets/graph.jpg";
 import { useEffect } from "react";
@@ -19,7 +19,8 @@ import Loader from "../components/Loader";
 import { getCookie } from "../components/getCookie";
 
 const Home = () => {
-  const {user, isLoading, isError, isSuccess, message, profile,isAuthenticated } = useSelector(state=> state.user)
+  const {user, isLoading, isError, isSuccess, message, profile,isAuthenticated, members } = useSelector(state=> state.user)
+  const {thisMonth} = useSelector(state=> state.bachat)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -42,7 +43,15 @@ const Home = () => {
   }
   },[])
 
-  if(isLoading || loading){
+  useEffect(() => {
+    if (!members) {
+      if (getCookie("token")) {
+        dispatch(getMembers());
+      }
+    }
+  }, [isAuthenticated]);
+
+  if(isLoading){
     return (
       <Loader />
     )
@@ -75,7 +84,7 @@ const Home = () => {
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <FiUsers className="text-lg 2xl:text-2xl" />
               </div>
-              <h3 className="text-gray-800 font-bold mt-2">16</h3>
+              <h3 className="text-gray-800 font-bold mt-2">{members && members.length}</h3>
               <p className="text-gray-500">Members</p>
             </div>
             <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
@@ -104,29 +113,29 @@ const Home = () => {
                   <div className="ml-8 font-semibold bg-blue-200 px-4 py-2 relative">
                     <div className="absolute left-[-8px] top-[50%] translate-y-[-50%] w-0 h-0 border-r-8 border-b-transparent border-b-solid border-t-transparent border-t-solid border-t-8 border-b-8 border-blue-200"></div>
 
-                    <h3>October, 2022</h3>
+                    <h3>{thisMonth && moment(thisMonth.date.split(' ')[1]+thisMonth.date.split(' ')[0]).format('MMMM YYYY')}</h3>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 ">
                   <div className="border border-gray-200 rounded-md p-4">
                     <p className="text-gray-500 my-2 text-center">
-                      Time Details
+                      Deposit Time ends
                     </p>
-                    <h1 className="text-8xl 2xl:text-9xl text-red-400 text-center">3</h1>
-                    <p className="text-red-400 text-center">Days Remaining</p>
+                    <h1 className="text-5xl capitalize 2xl:text-6xl font-semibold text-red-400 text-center">{moment().startOf('month').add(27,'days').fromNow()}</h1>
+                    <p className="text-red-400 text-center"></p>
                   </div>
                   <div className="p-4">
                     <p className="text-gray-500 mt-2 mb-4">Deposit Details</p>
                     <h3 className="text-green-500 font-bold flex items-center my-1 ">
-                      <span className="w-40">7 Deposited</span>{" "}
+                      <span className="w-40">{thisMonth && thisMonth.collected.filter(each=>each.status === 'Verified').length} Deposited</span>{" "}
                       <MdOutlineDone size={20} />
                     </h3>
                     <h3 className="text-blue-400 font-bold flex items-center  my-1">
-                      <span className="w-40">5 Unverified</span>{" "}
+                      <span className="w-40">{thisMonth && thisMonth.collected.filter(each=>each.status === 'Unverified').length} Unverified</span>{" "}
                       <GoUnverified size={20} />
                     </h3>
                     <h3 className="text-yellow-500 font-bold flex items-center my-1 ">
-                      <span className="w-40">4 Unsubmitted</span>{" "}
+                      <span className="w-40">{(members && members.length)-(thisMonth && thisMonth.collected.length)} Unsubmitted</span>{" "}
                       <MdOutlineCancel size={20} />{" "}
                     </h3>
                     <h3 className="text-red-400 font-bold flex items-center my-1 ">

@@ -10,10 +10,28 @@ const initialState ={
     isLoading: false,
     message: '',
     thisMonth: null,
+    notifications: null,
 }
 
-//Get cuurent month
+//Get all notifications
+export const getAllNotifications = createAsyncThunk('notifications/all', async(thunkAPI)=>{
+    try {
+        return await bachatService.getAllNotifications()
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
 
+//Get curent month
+export const currentMonth = createAsyncThunk('bachat/currentMonth', async(thunkAPI)=>{
+    try {
+        return await bachatService.currentMonth()
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
 
 //Get all months
 export const getAllMonth = createAsyncThunk('bachat/allmonth', async(thunkAPI)=>{
@@ -51,6 +69,34 @@ export const bachatApi = createSlice({
                 state.isError = true
                 state.message = action.payload
                 state.allMonth = null
+            })
+            .addCase(currentMonth.pending,(state)=>{
+                state.isLoading = true
+            })
+            .addCase(currentMonth.fulfilled,(state,action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.thisMonth = action.payload
+            })
+            .addCase(currentMonth.rejected, (state,action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+                state.thisMonth = null
+            })
+            .addCase(getAllNotifications.pending,(state)=>{
+                state.isLoading = true
+            })
+            .addCase(getAllNotifications.fulfilled,(state,action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.notifications = action.payload
+            })
+            .addCase(getAllNotifications.rejected, (state,action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+                state.notifications = null
             })
     }
 })

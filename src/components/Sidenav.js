@@ -10,6 +10,7 @@ import { FiUsers } from 'react-icons/fi'
 
 const Sidenav = () => {
   const { side, search } = useSelector((state)=> state.globals)
+  const {profile} = useSelector((state)=> state.user)
   const dispatch = useDispatch()
   const activeLink ='flex items-center gap-2 my-2 py-2 px-2  cursor-pointer rounded-md bg-blue-400 text-white transition-all duration-300 linear'
   const inactiveLink ='flex items-center gap-2 my-2 py-2 px-2 hover:bg-gray-300 cursor-pointer rounded-md transition-all duration-300 linear'
@@ -20,7 +21,10 @@ const Sidenav = () => {
             <p className='text-gray-600'>NAVIGATION</p>
             <div className='py-2 text-gray-800 '>
                 <NavLink to='/home' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineHome  size={20} />Home</NavLink>
-                <NavLink to='/adminpanel' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineDashboard size={20}/>Admin Panel</NavLink>
+                {profile && profile.user.role !== 'user' && (
+                  <NavLink to='/adminpanel' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineDashboard size={20}/>Admin Panel</NavLink>
+                )}
+                
                 <NavLink to='/notifications' className={({isActive})=>isActive?activeLink:inactiveLink}><BiNotification size={20}/>Notifications</NavLink>
                 <NavLink to='/members' className={({isActive})=>isActive?activeLink:inactiveLink}><FiUsers size={20}/>Members</NavLink>
                 <NavLink to='/history' className={({isActive})=>isActive?activeLink:inactiveLink}><BiHistory size={20}/>History</NavLink>

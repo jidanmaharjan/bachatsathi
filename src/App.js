@@ -23,6 +23,7 @@ import Loader from './components/Loader';
 //state imports
 import { getProfile, reset } from "./services/userApi";
 import { notificationToggle, settingToggle, sideToggle } from "./services/globals";
+import { currentMonth, getAllNotifications } from './services/bachatApi';
 
 
 function App() {
@@ -31,12 +32,23 @@ function App() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {user, isLoading, isError, isSuccess, message, profile, isAuthenticated } = useSelector((state)=> state.user)
+  const {thisMonth, isLoading:bachatLoading, isError:bachatError, isSuccess:bachatSuccess, message:bachatMessage, notifications  } = useSelector((state)=> state.bachat)
   const [screenSize, setScreenSize] = useState(0)
 
   useEffect(()=>{
     if(!profile){
       if(getCookie('token')){
       dispatch(getProfile())
+    }
+    }
+    if(!thisMonth){
+      if(getCookie('token')){
+      dispatch(currentMonth())
+    }
+    }
+    if(!notifications){
+      if(getCookie('token')){
+      dispatch(getAllNotifications())
     }
     }
   },[isAuthenticated])
