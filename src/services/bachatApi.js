@@ -23,6 +23,16 @@ export const getAllNotifications = createAsyncThunk('notifications/all', async(t
     }
 })
 
+//See all notifications
+export const seeAllNotifications = createAsyncThunk('notifications/seeall', async(thunkAPI)=>{
+    try {
+        return await bachatService.seeAllNotifications()
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 //Get curent month
 export const currentMonth = createAsyncThunk('bachat/currentMonth', async(thunkAPI)=>{
     try {
@@ -97,6 +107,14 @@ export const bachatApi = createSlice({
                 state.isError = true
                 state.message = action.payload
                 state.notifications = null
+            })
+            .addCase(seeAllNotifications.fulfilled,(state,action)=>{
+                state.isSuccess = true
+                state.notifications = null
+            })
+            .addCase(seeAllNotifications.rejected, (state,action)=>{
+                state.isError = true
+                state.message = action.payload
             })
     }
 })

@@ -12,6 +12,8 @@ import { notificationToggle, searchTerm, settingToggle, sideToggle } from "../se
 import { logout } from "../services/userApi";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import moment from "moment/moment";
+import { getAllNotifications, seeAllNotifications } from "../services/bachatApi";
 
 const Topnav = () => {
     const {search, notification, setting, side } = useSelector((state)=> state.globals)
@@ -19,11 +21,17 @@ const Topnav = () => {
     const dispatch = useDispatch()
     const { profile } = useSelector(state=> state.user)
     const [selectedNotifications, setSelectedNotifications] = useState([])
+
     useEffect(()=>{
       if(notifications && profile){
         setSelectedNotifications(notifications.filter(unit=>!unit.seen.find(one=>one._id === (profile && profile.user._id))))
       }
     },[notifications,profile])
+
+    const readAll =() =>{
+      dispatch(seeAllNotifications())
+      dispatch(getAllNotifications())
+    }
   return (
     <div className="flex sticky top-0 z-50 border-b border-gray-100 p-2 justify-end sm:justify-between items-center w-full bg-gray-200 text-gray-600 2xl:text-lg">
       <FaBars className="ml-4 hidden sm:inline cursor-pointer text-blue-400 2xl:text-xl" onClick={()=>dispatch(sideToggle(!side))} />
@@ -54,12 +62,12 @@ const Topnav = () => {
             <div className="h-[1px] bg-gray-200 w-full"></div>
             <ul>
               {selectedNotifications && selectedNotifications.map(unit =>(
-                <li key={unit._id}><div className="flex items-center p-2 my-2 hover:bg-gray-300 cursor-pointer rounded-md"><GoPrimitiveDot className="text-blue-400" /><div className="w-full ml-2 "><p className="">{unit.title}</p><p className="text-xs 2xl:text-sm text-gray-500">{unit.date}</p> </div></div> <div className="h-[1px] bg-gray-200 w-full mb-2"></div></li>
+                <li key={unit._id}><div className="flex items-center p-2 my-2 hover:bg-gray-300 cursor-pointer rounded-md"><GoPrimitiveDot className="text-blue-400" /><div className="w-full ml-2 "><p className="">{unit.title}</p><p className="text-xs 2xl:text-sm text-gray-500">{moment(unit.date).fromNow()}</p> </div></div> <div className="h-[1px] bg-gray-200 w-full mb-2"></div></li>
               ))}
                 
                            
             </ul>
-            {selectedNotifications.length>0? (<div className="text-sm flex justify-between"><button className="p-2 bg-blue-400 hover:bg-blue-500 text-white rounded-md">Mark all as read</button><Link to={'/notifications'} className="text-red-400 hover:underline p-2" onClick={()=>dispatch(notificationToggle(false))}>See all</Link></div>):(
+            {selectedNotifications.length>0? (<div className="text-sm flex justify-between"><button className="p-2 bg-blue-400 hover:bg-blue-500 text-white rounded-md" onClick={()=>readAll()}>Mark all as read</button><Link to={'/notifications'} className="text-red-400 hover:underline p-2" onClick={()=>dispatch(notificationToggle(false))}>See all</Link></div>):(
               <p className="p-4 text-center text-gray-500">No new notifications</p>
             )}
             

@@ -4,7 +4,13 @@ import { baseUrl } from "../components/Apiurl";
 //get all notifications
 const getAllNotifications = async ()=> {
     const response = await axios.get(baseUrl+'/allnotifications',{withCredentials: true})
-    return response.data.notifications
+    return response.data.notifications.reverse()
+}
+
+//get all notifications
+const seeAllNotifications = async ()=> {
+    const response = await axios.get(baseUrl+'/seeallnotifications',{withCredentials: true})
+    return response.data.message
 }
 
 //get allmonth
@@ -23,6 +29,7 @@ const bachatService = {
     getAllMonth,
     currentMonth,
     getAllNotifications,
+    seeAllNotifications,
 }
 
 export default bachatService

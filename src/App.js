@@ -51,7 +51,7 @@ function App() {
       dispatch(getAllNotifications())
     }
     }
-  },[isAuthenticated])
+  },[isAuthenticated,notifications])
 
 
   useEffect(() =>{

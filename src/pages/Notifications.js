@@ -9,6 +9,7 @@ import { GoPrimitiveDot } from "react-icons/go";
 import { useState } from "react";
 import { getCookie } from "../components/getCookie";
 import moment from "moment/moment";
+import { getAllNotifications, seeAllNotifications } from "../services/bachatApi";
 
 const Notifications = () => {
   const [toggle, setToggle] = useState(false);
@@ -48,12 +49,21 @@ const Notifications = () => {
     
   };
 
+  const readAll =() =>{
+    dispatch(seeAllNotifications())
+    dispatch(getAllNotifications())
+  }
+
   if (isLoading) {
     return <Loader />;
   }
   return (
     <div className=" p-4 mt-4">
-      <h1 className="my-2 font-bold text-gray-600">NOTIFICATIONS</h1>
+      <div className="flex justify-between mb-4">
+        <h1 className="my-2 font-bold text-gray-600">NOTIFICATIONS</h1>
+        <button className="py-0 px-2 bg-blue-400 hover:bg-blue-500 text-white rounded-md" onClick={()=>readAll()}>Mark all as read</button>
+      </div>
+      
       <div className="p-4 rounded-md bg-gray-100">
         <div>
           {notifications &&
@@ -67,7 +77,7 @@ const Notifications = () => {
                   <div className="w-full ml-2 ">
                     <p className="">{notification.title}</p>
                     <p className="text-xs 2xl:text-sm text-gray-500">
-                      {notification.date}
+                      {moment(notification.date).fromNow()}
                     </p>
                   </div>
                 </div>
