@@ -9,6 +9,7 @@ import { getProfile, register, reset } from '../services/userApi';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCookie } from '../components/getCookie';
 
 const Register = () => {
     const userRef = useRef()
@@ -32,13 +33,23 @@ const Register = () => {
     },[isSuccess])
 
     useEffect(()=>{
+      if(!isLoading){
+        if(!getCookie('token')){
+          navigate('/')
+          
+        }
+    }
+    },[])
+
+    useEffect(()=>{
            
         if (!isLoading) {
-          if (isAuthenticated) {
-            navigate("/home");
+          if(getCookie('token')){
+            navigate('/home')
+            
           }
         }
-    },[isAuthenticated])
+    },[])
 
 
     useEffect(()=>{

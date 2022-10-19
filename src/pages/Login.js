@@ -9,6 +9,7 @@ import PuffLoader from 'react-spinners/PuffLoader';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCookie } from "../components/getCookie";
 
 
 const Login = () => {
@@ -27,11 +28,13 @@ const Login = () => {
     
 },[])
 
+
 useEffect(()=>{
    
     if (!isLoading) {
-      if (isAuthenticated) {
-        navigate("/home");
+      if(getCookie('token')){
+        navigate('/home')
+        
       }
     }
 },[isAuthenticated])

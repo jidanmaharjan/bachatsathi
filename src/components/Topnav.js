@@ -62,7 +62,7 @@ const Topnav = () => {
             <div className="h-[1px] bg-gray-200 w-full"></div>
             <ul>
               {selectedNotifications && selectedNotifications.map(unit =>(
-                <li key={unit._id}><div className="flex items-center p-2 my-2 hover:bg-gray-300 cursor-pointer rounded-md"><GoPrimitiveDot className="text-blue-400" /><div className="w-full ml-2 "><p className="">{unit.title}</p><p className="text-xs 2xl:text-sm text-gray-500">{moment(unit.date).fromNow()}</p> </div></div> <div className="h-[1px] bg-gray-200 w-full mb-2"></div></li>
+                <li key={unit._id}><div className="flex items-center p-2 my-2 hover:bg-gray-300 cursor-pointer rounded-md"><GoPrimitiveDot className="text-blue-400" /><div className="w-full ml-2 text-ellipsis whitespace-nowrap overflow-hidden"><p className="">{unit.title}</p><p className="text-xs 2xl:text-sm text-gray-500">{moment(unit.date).fromNow()}</p> </div></div> <div className="h-[1px] bg-gray-200 w-full mb-2"></div></li>
               ))}
                 
                            

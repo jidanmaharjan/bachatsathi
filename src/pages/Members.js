@@ -20,16 +20,14 @@ const Members = () => {
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isLoading) {
-        if (!isAuthenticated) {
-          navigate("/");
-        }
+  useEffect(()=>{
+    if(!isLoading){
+      if(!getCookie('token')){
+        navigate('/')
+        
       }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [isAuthenticated]);
+  }
+  },[])
 
 
   if (isLoading) {

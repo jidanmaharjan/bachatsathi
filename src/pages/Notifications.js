@@ -37,15 +37,8 @@ const Notifications = () => {
 
   const expandNoti = (id) => {
     
-    for(let i=0; i< (notifications && notifications.length);i++){
-      let notiitem = document.getElementById("noti"+i);
-      
-        notiitem.classList.remove("h-auto");
-      notiitem.classList.add("h-0");
-    }
     let selected = document.getElementById("noti"+id)
-    selected.classList.remove("h-0");
-      selected.classList.add("h-auto");
+    selected.classList.toggle("h-0");
     
   };
 
