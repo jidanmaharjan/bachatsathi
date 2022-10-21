@@ -28,7 +28,7 @@ import { currentMonth, getAllNotifications } from './services/bachatApi';
 
 function App() {
   const {pathname} = useLocation();
-  const {side } = useSelector((state)=>state.globals)
+  const {side, notification, setting } = useSelector((state)=>state.globals)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {user, isLoading, isError, isSuccess, message, profile, isAuthenticated } = useSelector((state)=> state.user)
@@ -80,8 +80,10 @@ function App() {
       {!(pathname === '/' || pathname === '/register') && (<Topnav />) }  
       {!(pathname === '/' || pathname === '/register') && (<Botnav />) }
       <div onClick={()=>{
-        dispatch(notificationToggle(false))
-        dispatch(settingToggle(false))
+        notification === true && dispatch(notificationToggle(false))
+        setting === true && dispatch(settingToggle(false))
+        
+        
       }}>
       <Routes>
       <Route path='/' element={<Login />} />

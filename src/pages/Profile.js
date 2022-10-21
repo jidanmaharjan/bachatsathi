@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import { BiWallet } from "react-icons/bi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
+import { getOverall } from "../services/bachatApi";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,9 @@ const Profile = () => {
     isSuccess,
     message,
     isAuthenticated,
+    members
   } = useSelector((state) => state.user);
+  const{overall} = useSelector((state) => state.bachat)
 
   const navigate = useNavigate();
 
@@ -29,6 +32,11 @@ const Profile = () => {
         navigate('/')
         
       }
+  }
+  if (!overall) {
+    if (getCookie("token")) {
+      dispatch(getOverall());
+    }
   }
   },[])
 
@@ -83,16 +91,16 @@ const Profile = () => {
            <div className="absolute bg-amber-400 py-2 px-4 rounded-r-md font-bold right-[-.5rem]">Active</div>
            <p className="mt-4">GROUP SAVINGS</p> 
            <div className="flex items-center "><BiWallet className="mr-2 text-xl" />{profile && profile.user._id}</div>
-           <div className="flex items-center relative">{balanceToggle?(<p className="my-4 font-bold text-white">RS XXXX.XX</p>):(<p className="my-4 font-bold text-white">RS 2450</p>)}<span className="text-xl ml-8 absolute left-32 cursor-pointer hover:text-amber-400" onClick={()=>setBalanceToggle(!balanceToggle)}>{balanceToggle?(<AiOutlineEye />):(<AiOutlineEyeInvisible  />)}</span></div>
+           <div className="flex items-center relative">{balanceToggle?(<p className="my-4 font-bold text-white">RS XXXX.XX</p>):(<p className="my-4 font-bold text-white">RS {overall && members && (overall.totalSavings/members.length).toFixed(2)}</p>)}<span className="text-xl ml-8 absolute left-32 cursor-pointer hover:text-amber-400" onClick={()=>setBalanceToggle(!balanceToggle)}>{balanceToggle?(<AiOutlineEye />):(<AiOutlineEyeInvisible  />)}</span></div>
            <p className="my-4">{profile && profile.user.name}</p>
            <div className="flex">
             <div className="mr-4">
               <p>Actual Balance</p>
-              {balanceToggle?(<p>RS XXX.XX</p>):(<p>RS 2100</p>)}
+              {balanceToggle?(<p>RS XXX.XX</p>):(<p>RS {overall && members && ((overall.totalSavings/members.length)*.88).toFixed(2)}</p>)}
             </div>
             <div>
               <p>Accured Interest</p>
-              {balanceToggle?(<p>RS XXX.XX</p>):(<p>RS 350</p>)}
+              {balanceToggle?(<p>RS XXX.XX</p>):(<p>RS {overall && members && ((overall.totalSavings/members.length)*.12).toFixed(2)}</p>)}
             </div>
           </div>
 

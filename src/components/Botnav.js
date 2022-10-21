@@ -1,6 +1,7 @@
 import React from 'react'
 import {AiOutlineHome, AiOutlineDashboard} from 'react-icons/ai'
-import {BiNotification, BiHistory} from 'react-icons/bi'
+import { BiHistory} from 'react-icons/bi'
+import { CgProfile} from 'react-icons/cg'
 import { FiUsers } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -18,9 +19,9 @@ const Botnav = () => {
                   <NavLink to='/adminpanel' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineDashboard /></NavLink>
                 )}
                   
-                  <NavLink to='/notifications' className={({isActive})=>isActive?activeLink:inactiveLink}><BiNotification /></NavLink>
                   <NavLink to='/members' className={({isActive})=>isActive?activeLink:inactiveLink}><FiUsers /></NavLink>
                   <NavLink to='/history' className={({isActive})=>isActive?activeLink:inactiveLink}><BiHistory /></NavLink>
+                  <NavLink to='/profile' className={({isActive})=>isActive?activeLink:inactiveLink}><CgProfile /></NavLink>
               </div>
       </div>
     )

@@ -17,10 +17,11 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 
 import { getCookie } from "../components/getCookie";
+import { getOverall } from "../services/bachatApi";
 
 const Home = () => {
   const {user, isLoading, isError, isSuccess, message, profile,isAuthenticated, members } = useSelector(state=> state.user)
-  const {thisMonth} = useSelector(state=> state.bachat)
+  const {thisMonth, overall} = useSelector(state=> state.bachat)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -47,6 +48,11 @@ const Home = () => {
     if (!members) {
       if (getCookie("token")) {
         dispatch(getMembers());
+      }
+    }
+    if (!overall) {
+      if (getCookie("token")) {
+        dispatch(getOverall());
       }
     }
   }, [isAuthenticated]);
@@ -118,14 +124,14 @@ const Home = () => {
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <GiReceiveMoney className="text-lg 2xl:text-2xl" />
               </div>
-              <h3 className="text-gray-800 font-bold mt-2">Rs. 17059</h3>
+              <h3 className="text-gray-800 font-bold mt-2">Rs. {overall && overall.totalSavings}</h3>
               <p className="text-gray-500">Total Savings</p>
             </div>
             <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <FaCoins className="text-lg 2xl:text-2xl" />
               </div>
-              <h3 className="text-gray-800 font-bold mt-2">Rs. 1147</h3>
+              <h3 className="text-gray-800 font-bold mt-2">Rs. {overall && (overall.totalSavings*.12).toFixed(2)}</h3>
               <p className="text-gray-500">Total Profit</p>
             </div>
             <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
@@ -139,14 +145,14 @@ const Home = () => {
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <AiOutlineWarning className="text-lg 2xl:text-2xl" />
               </div>
-              <h3 className="text-gray-800 font-bold mt-2">Rs. 750</h3>
+              <h3 className="text-gray-800 font-bold mt-2">Rs. {overall && overall.totalFine}</h3>
               <p className="text-gray-500">Total Fine</p>
             </div>
             <div className="text-blue-400 bg-gray-100 p-4 rounded-md md:aspect-[4/3] ">
               <div className="p-4 rounded-full bg-blue-200 w-fit">
                 <GiPayMoney className="text-lg 2xl:text-2xl" />
               </div>
-              <h3 className="text-gray-800 font-bold mt-2">Rs. 0.0</h3>
+              <h3 className="text-gray-800 font-bold mt-2">Rs. {overall && overall.totalWithdraw}</h3>
               <p className="text-gray-500">Total Withdraw</p>
             </div>
           </div>

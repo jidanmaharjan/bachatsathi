@@ -83,7 +83,7 @@ useEffect(()=>{
       ):(
         <div className="flex flex-col bg-gray-100 rounded-lg p-4 pb-8 w-full sm:w-[400px]">
         <img src={logolight} className="w-full mb-12 z-1 object-cover mix-blend-multiply " alt="" />
-        <form className="flex flex-col">
+        <form className="flex flex-col" onSubmit={(e)=>handleSubmit(e)}>
           <label
             className="translate-y-3 translate-x-2 bg-gray-100 w-fit px-2 text-gray-700"
             htmlFor="email"
@@ -112,7 +112,7 @@ useEffect(()=>{
             ref={passwordRef}
             required
           />
-          <button className="bg-blue-400 rounded-md p-2 mt-2 hover:bg-blue-500 text-gray-100" onClick={(e)=>handleSubmit(e)}>
+          <button type="submit" className="bg-blue-400 rounded-md p-2 mt-2 hover:bg-blue-500 text-gray-100" >
             Login
           </button>
         </form>

@@ -37,12 +37,18 @@ const getMembers = async() =>{
             return response.data
 }
 
+const getAllUsers = async() =>{
+    const response = await axios.get(baseUrl+'/superadmin/users',{withCredentials: true})
+            return response.data.users
+}
+
 const authService = {
     register,
     login,
     logout,
     getProfile,
-    getMembers
+    getMembers,
+    getAllUsers,
 }
 
 export default authService

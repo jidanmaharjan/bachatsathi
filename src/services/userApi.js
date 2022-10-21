@@ -13,7 +13,8 @@ const initialState ={
     isAuthenticated: false,
     message: '',
     profile: null,
-    members: null
+    members: null,
+    allUsers: null,
 }
 
 //Register User
@@ -58,6 +59,16 @@ export const getMembers = createAsyncThunk('user/members', async(thunkAPI)=>{
         return await authService.getMembers()
         
         
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Get all users
+export const getAllUsers = createAsyncThunk('user/allusers', async(thunkAPI)=>{
+    try {
+        return await authService.getAllUsers()
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -153,6 +164,20 @@ export const userApi = createSlice({
                 state.members = action.payload.members
             })
             .addCase(getMembers.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getAllUsers.pending, (state)=>{
+                state.isLoading = true
+
+            })
+            .addCase(getAllUsers.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.allUsers = action.payload
+            })
+            .addCase(getAllUsers.rejected, (state, action)=>{
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
