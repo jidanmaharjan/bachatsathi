@@ -32,6 +32,14 @@ const getProfile = async() =>{
     return response.data
 }
 
+//Change Password
+const changePassword = async(pass) =>{
+    const response = await axios.put(baseUrl+'/password/update',pass,{withCredentials: true})
+    if(response.data.token){
+        return 'Password updated successfully'
+    }
+}
+
 const getMembers = async() =>{
     const response = await axios.get(baseUrl+'/members',{withCredentials: true})
             return response.data
@@ -42,13 +50,38 @@ const getAllUsers = async() =>{
             return response.data.users
 }
 
+const acceptUser = async(id) =>{
+    const response = await axios.get(baseUrl+`/superadmin/user/accept/${id}`,{withCredentials: true})
+        if(response.data.success){
+            return 'User Accepted'
+        }
+}
+
+const resetPassword = async(id) =>{
+    const response = await axios.get(baseUrl+`/superadmin/user/reset/${id}`,{withCredentials: true})
+        if(response.data.success){
+            return 'User Password reset successfully'
+        }
+}
+
+const deleteUser = async(id) =>{
+    const response = await axios.delete(baseUrl+`/superadmin/user/${id}`,{withCredentials: true})
+        if(response.data.success){
+            return 'User Deleted Successfully'
+        }
+}
+
 const authService = {
     register,
     login,
     logout,
     getProfile,
+    changePassword,
     getMembers,
     getAllUsers,
+    acceptUser,
+    resetPassword,
+    deleteUser,
 }
 
 export default authService

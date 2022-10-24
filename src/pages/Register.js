@@ -27,19 +27,14 @@ const Register = () => {
         if(isSuccess){
         toast.success(message)
         dispatch(reset())
+        userRef.current.value = ''
+        emailRef.current.value = ''
+        passwordRef.current.value = ''
+        cpasswordRef.current.value = ''
       }
       }, 500);
       return() =>clearTimeout(timer);
     },[isSuccess])
-
-    useEffect(()=>{
-      if(!isLoading){
-        if(!getCookie('token')){
-          navigate('/')
-          
-        }
-    }
-    },[])
 
     useEffect(()=>{
            

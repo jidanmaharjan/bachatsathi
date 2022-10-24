@@ -24,6 +24,7 @@ import Loader from './components/Loader';
 import { getProfile, reset } from "./services/userApi";
 import { notificationToggle, settingToggle, sideToggle } from "./services/globals";
 import { currentMonth, getAllNotifications } from './services/bachatApi';
+import Changepassword from './pages/Changepassword';
 
 
 function App() {
@@ -53,6 +54,11 @@ function App() {
     }
   },[isAuthenticated,notifications])
 
+  useEffect(()=>{
+    if(!getCookie('token')){
+      navigate('/')
+    }
+  },[profile])
 
   useEffect(() =>{
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -94,6 +100,7 @@ function App() {
       <Route path='/notifications' element={<Notifications />} />
       <Route path='/history' element={<History />} />
       <Route path='/profile' element={<Profile />} />
+      <Route path='/password/change' element={<Changepassword />} />
      </Routes>
       </div>
     

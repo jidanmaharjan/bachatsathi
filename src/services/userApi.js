@@ -53,6 +53,16 @@ export const getProfile = createAsyncThunk('user/profile', async(thunkAPI) =>{
     }
 })
 
+//Change password
+export const changePassword = createAsyncThunk('changePassword', async(data, thunkAPI)=>{
+    try {
+        return await authService.changePassword(data)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 //Get Members
 export const getMembers = createAsyncThunk('user/members', async(thunkAPI)=>{
     try {
@@ -69,6 +79,36 @@ export const getMembers = createAsyncThunk('user/members', async(thunkAPI)=>{
 export const getAllUsers = createAsyncThunk('user/allusers', async(thunkAPI)=>{
     try {
         return await authService.getAllUsers()
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Accept a user
+export const acceptUser = createAsyncThunk('user/accept', async(id,thunkAPI)=>{
+    try {
+        return await authService.acceptUser(id)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Reset user password
+export const resetPassword = createAsyncThunk('user/reset', async(id,thunkAPI)=>{
+    try {
+        return await authService.resetPassword(id)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Delete the user
+export const deleteUser = createAsyncThunk('user/delete', async(id,thunkAPI)=>{
+    try {
+        return await authService.deleteUser(id)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -137,6 +177,20 @@ export const userApi = createSlice({
                 state.isAuthenticated = false
                 state.message = action.payload
             })
+            .addCase(changePassword.pending, (state)=>{
+                state.isLoading = true
+
+            })
+            .addCase(changePassword.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(changePassword.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
             
             .addCase(logout.pending, (state)=>{
                 state.isLoading = true
@@ -169,15 +223,55 @@ export const userApi = createSlice({
                 state.message = action.payload
             })
             .addCase(getAllUsers.pending, (state)=>{
-                state.isLoading = true
+                state.isLoading = false
 
             })
             .addCase(getAllUsers.fulfilled, (state, action)=>{
                 state.isLoading = false
-                state.isSuccess = true
                 state.allUsers = action.payload
             })
             .addCase(getAllUsers.rejected, (state, action)=>{
+                state.isLoading = false
+                state.message = action.payload
+            })
+            .addCase(acceptUser.pending, (state)=>{
+                state.isLoading = false
+
+            })
+            .addCase(acceptUser.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(acceptUser.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(resetPassword.pending, (state)=>{
+                state.isLoading = false
+
+            })
+            .addCase(resetPassword.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(resetPassword.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(deleteUser.pending, (state)=>{
+                state.isLoading = false
+
+            })
+            .addCase(deleteUser.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(deleteUser.rejected, (state, action)=>{
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

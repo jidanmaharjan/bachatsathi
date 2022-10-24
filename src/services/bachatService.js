@@ -42,6 +42,12 @@ const currentMonth = async ()=> {
     return response.data.bachat
 }
 
+//Submit this month
+const submitCurrent = async ()=> {
+    const response = await axios.get(baseUrl+'/submitcurrentmonth',{withCredentials: true})
+    return response.data.message
+}
+
 //get thisMonth
 const getUnverifiedSubmits = async ()=> {
     const response = await axios.get(baseUrl+'/getunverifiedusers',{withCredentials: true})
@@ -53,6 +59,7 @@ const bachatService = {
     getOverall,
     changeOverall,
     currentMonth,
+    submitCurrent,
     getUnverifiedSubmits,
     createNotification,
     getAllNotifications,

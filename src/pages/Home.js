@@ -6,8 +6,8 @@ import { AiOutlineWarning } from "react-icons/ai";
 import { FaCoins, FaBus } from "react-icons/fa";
 import { GiReceiveMoney, GiPayMoney } from "react-icons/gi";
 import { GoUnverified } from "react-icons/go";
-import { BsCalendarCheck } from "react-icons/bs";
-import { MdOutlineDone, MdOutlineCancel, MdErrorOutline } from "react-icons/md";
+import { BsCalendarCheck, BsCheckCircle } from "react-icons/bs";
+import { MdOutlineDone, MdOutlineCancel, MdErrorOutline, MdOutlinePendingActions, MdPendingActions } from "react-icons/md";
 import moment from 'moment/moment';
 
 import graph from "../assets/graph.jpg";
@@ -17,11 +17,11 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 
 import { getCookie } from "../components/getCookie";
-import { getOverall } from "../services/bachatApi";
+import { currentMonth, getOverall, submitCurrent } from "../services/bachatApi";
 
 const Home = () => {
   const {user, isLoading, isError, isSuccess, message, profile,isAuthenticated, members } = useSelector(state=> state.user)
-  const {thisMonth, overall} = useSelector(state=> state.bachat)
+  const {thisMonth, overall, isLoading:bachatLoading} = useSelector(state=> state.bachat)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -56,6 +56,12 @@ const Home = () => {
       }
     }
   }, [isAuthenticated]);
+
+  const submitCurrentMonth = () =>{
+    dispatch(submitCurrent())
+    setTimeout(()=>dispatch(currentMonth()), 1000)
+    
+  }
 
   if(isLoading){
     return (
@@ -114,7 +120,20 @@ const Home = () => {
                 </div>
               </div>
               <div className="bg-gray-100 p-4 rounded-md  ">
-                <img src={graph} alt="graph" className="mix-blend-multiply" />
+                <h3 className="font-semibold text-gray-600 mb-4">Your Deposit Details</h3>
+                <div>
+                  <div className="p-4 border border-gray-200 rounded-md flex flex-col items-center">
+                    <h3 className="text-gray-500 mb-2">Deposit Status</h3>
+                    {thisMonth && profile && thisMonth.collected.filter(each=> each.user === profile.user._id && each.status === 'Verified').length>0? 
+                    (<p className="text-green-500 text-xl flex flex-col items-center"><BsCheckCircle className="text-7xl" /><span>Deposited</span>  </p>) 
+                    :thisMonth && profile && thisMonth.collected.filter(each=> each.user === profile.user._id && each.status === 'Unverified').length>0?
+                    (<p className="text-blue-400 text-xl flex flex-col items-center"><MdPendingActions className="text-7xl" /><span>Unverified</span>  </p>) 
+                    : (<p className="text-yellow-500 text-xl flex flex-col items-center"><MdOutlineCancel className="text-7xl" /><span>Unsubmitted</span>  </p>) }
+                    
+                  </div>
+                  {thisMonth && profile && thisMonth.collected.filter(each=> each.user === profile.user._id).length>0? null: (<button className="bg-blue-400 hover:bg-blue-500 disabled:bg-blue-200 text-gray-100 p-2 rounded-md mt-4 mx-auto w-full" onClick={()=>submitCurrentMonth()} disabled={bachatLoading}>Request Verification</button>) }
+                    
+                </div>
               </div>
             </div>
           </div>

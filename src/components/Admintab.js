@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOverall, createNotification, currentMonth, getAllNotifications, getOverall, getUnverifiedSubmits } from "../services/bachatApi";
-import { getAllUsers, getMembers } from "../services/userApi";
+import { acceptUser, deleteUser, getAllUsers, getMembers, reset, resetPassword } from "../services/userApi";
 
 //Icons import 
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -17,7 +17,7 @@ import { useState } from "react";
 
 const Admintab = ({ tab }) => {
   const { unverifiedSubmits, thisMonth,overall, isLoading } = useSelector((state) => state.bachat);
-  const { allUsers,profile,members } = useSelector((state) => state.user)
+  const { allUsers,profile,members, message, isError, isSuccess} = useSelector((state) => state.user)
   const totalSavings  = useRef()
   const totalFine = useRef()
   const totalWithdraw = useRef()
@@ -51,6 +51,28 @@ const Admintab = ({ tab }) => {
         setSubmitted(members.filter(each=> (thisMonth.collected.find(x=>(x.user === each.id && x.status === 'Verified') ))))
     }
   },[members, thisMonth])
+
+  useEffect(()=>{
+    const timer = setTimeout(() => {
+      if(isError){
+        if(message !== ''){
+          toast.error(message)
+          setTimeout(()=>dispatch(reset()), 500)
+        }
+      
+    }
+      if(isSuccess){
+        if(message !== ''){
+          toast.success(message)
+          setTimeout(()=>dispatch(reset()),500)
+        }
+      
+    }
+    }, 500);
+    return() =>clearTimeout(timer);
+  
+    
+  },[isError, isSuccess])
 
 
   const submitHandler = (e) =>{
@@ -91,6 +113,22 @@ const Admintab = ({ tab }) => {
     setTimeout(()=>dispatch(getAllNotifications()), 2000)
     
     toast.success('Notification created successfully')
+  }
+
+  const acceptNewUser = (id)=>{
+    dispatch(acceptUser(id))
+    setTimeout(()=>dispatch(getAllUsers()), 2000)
+    
+  }
+
+  const resetUserPassword = (id)=>{
+    dispatch(resetPassword(id))
+    setTimeout(()=>dispatch(getAllUsers()), 2000)
+  }
+
+  const deleteNewUser = (id)=>{
+    dispatch(deleteUser(id))
+    setTimeout(()=>dispatch(getAllUsers()), 2000)
   }
 
   return (
@@ -151,9 +189,6 @@ const Admintab = ({ tab }) => {
                     <td className="p-2 flex flex-wrap flex-col sm:flex-row gap-2">
                       <button className="bg-green-400 py-1 px-2 text-gray-100 rounded-md">
                         Verify
-                      </button>
-                      <button className="bg-red-400 py-1 px-2 text-gray-100 rounded-md">
-                        Unverify
                       </button>
                     </td>
                   </tr>
@@ -297,16 +332,16 @@ const Admintab = ({ tab }) => {
                     </td>
                     <td className="p-2 flex flex-wrap flex-col sm:flex-row gap-2 text-lg sm:text-xl w-fit">
                     {!unit.verified && (
-                        <button className="bg-green-400 p-2 text-gray-100 rounded-md">
+                        <button className="bg-green-400 p-2 text-gray-100 rounded-md" onClick={()=>acceptNewUser(unit._id)}>
                         <FiUserPlus />
                       </button>
                       ) }
                       
-                      <button className="bg-amber-400 p-2 text-gray-100 rounded-md">
+                      <button className="bg-amber-400 p-2 text-gray-100 rounded-md" onClick={()=>resetUserPassword(unit._id)}>
                         <BiReset />
                       </button>
                       {!unit.verified && (
-                        <button className="bg-red-400 p-2 text-gray-100 rounded-md">
+                        <button className="bg-red-400 p-2 text-gray-100 rounded-md" onClick={()=>deleteNewUser(unit._id)}>
                         <AiOutlineDelete />
                       </button>
                       ) }

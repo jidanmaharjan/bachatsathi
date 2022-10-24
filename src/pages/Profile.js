@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCookie } from "../components/getCookie";
 import Loader from "../components/Loader";
 import { BiWallet } from "react-icons/bi";
@@ -81,9 +81,9 @@ const Profile = () => {
               <button className="mt-4  bg-blue-400 text-gray-100 py-2 px-4 rounded-md">
               Edit Profile
             </button>
-              <button className="mt-4 bg-blue-400 text-gray-100 py-2 px-4 rounded-md">
+              <Link to='/password/change' className="mt-4 bg-blue-400 text-gray-100 text-center py-2 px-4 rounded-md">
                 Change Password
-              </button>
+              </Link>
             </div>
           )}
         </div>

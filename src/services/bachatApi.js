@@ -76,6 +76,16 @@ export const currentMonth = createAsyncThunk('bachat/currentMonth', async(thunkA
     }
 })
 
+//Submit current month
+export const submitCurrent = createAsyncThunk('bachat/submitcurrent', async(thunkAPI)=>{
+    try {
+        return await bachatService.submitCurrent()
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 //Get all months
 export const getAllMonth = createAsyncThunk('bachat/allmonth', async(thunkAPI)=>{
     try {
@@ -163,6 +173,18 @@ export const bachatApi = createSlice({
                 state.isError = true
                 state.message = action.payload
                 state.thisMonth = null
+            })
+            .addCase(submitCurrent.pending,(state)=>{
+                state.isLoading = true
+            })
+            .addCase(submitCurrent.fulfilled,(state,action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(submitCurrent.rejected, (state,action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
             })
             .addCase(getUnverifiedSubmits.pending,(state)=>{
                 state.isLoading = true
