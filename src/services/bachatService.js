@@ -1,3 +1,4 @@
+import { Data } from "@syncfusion/ej2-react-grids";
 import axios from "axios";
 import { baseUrl } from "../components/Apiurl";
 
@@ -54,6 +55,31 @@ const getUnverifiedSubmits = async ()=> {
     return response.data.data
 }
 
+//Verify submission 
+const verifySubmission = async (id)=> {
+    const response = await axios.get(baseUrl+`/verifysubmission?collectId=${id}`,{withCredentials: true})
+    if(response.data.success === true){
+        return 'Submission verified successfully'
+    }
+}
+
+//Verify unsubmitted
+const verifyUnsubmitted = async (data)=> {
+    const response = await axios.post(baseUrl+'/verifyunsubmitted',data,{withCredentials: true})
+    if(response.data.success === true){
+        return 'Submission verified successfully'
+    }
+}
+
+//unverify submission
+const unverifySubmission = async (data)=> {
+    console.log(data);
+    const response = await axios.get(baseUrl+`/unverifysubmission/${data.monthId}/${data.collectId}`,{withCredentials: true})
+    if(response.data.success === true){
+        return 'Submission unverified successfully'
+    }
+}
+
 const bachatService = {
     getAllMonth,
     getOverall,
@@ -61,6 +87,9 @@ const bachatService = {
     currentMonth,
     submitCurrent,
     getUnverifiedSubmits,
+    verifySubmission,
+    verifyUnsubmitted,
+    unverifySubmission,
     createNotification,
     getAllNotifications,
     seeAllNotifications,

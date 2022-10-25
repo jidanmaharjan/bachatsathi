@@ -106,6 +106,38 @@ export const getUnverifiedSubmits = createAsyncThunk('bachat/unverified', async(
     }
 })
 
+//Verify a submit
+export const verifySubmission = createAsyncThunk('bachat/verifysubmit', async(id,thunkAPI) =>{
+    try {
+        return await bachatService.verifySubmission(id)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Unverify a submit
+export const unverifySubmission = createAsyncThunk('bachat/unverifysubmit', async(data,thunkAPI) =>{
+    try {
+        return await bachatService.unverifySubmission(data)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+//Verify unsubmitted
+export const verifyUnsubmitted = createAsyncThunk('bachat/verifyunsubmitted', async(data,thunkAPI) =>{
+    try {
+        return await bachatService.verifyUnsubmitted(data)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
+
 export const bachatApi = createSlice({
     name: 'bachat',
     initialState,
@@ -199,6 +231,45 @@ export const bachatApi = createSlice({
                 state.isError = true
                 state.message = action.payload
                 state.unverifiedSubmits = null
+            })
+            .addCase(verifySubmission.pending,(state)=>{
+                state.isLoading = true
+            })
+            .addCase(verifySubmission.fulfilled,(state,action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(verifySubmission.rejected, (state,action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(verifyUnsubmitted.pending,(state)=>{
+                state.isLoading = true
+            })
+            .addCase(verifyUnsubmitted.fulfilled,(state,action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(verifyUnsubmitted.rejected, (state,action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(unverifySubmission.pending,(state)=>{
+                state.isLoading = true
+            })
+            .addCase(unverifySubmission.fulfilled,(state,action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.message = action.payload
+            })
+            .addCase(unverifySubmission.rejected, (state,action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
             })
             .addCase(createNotification.pending,(state)=>{
                 state.isLoading = true

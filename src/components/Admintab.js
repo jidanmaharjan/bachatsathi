@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeOverall, createNotification, currentMonth, getAllNotifications, getOverall, getUnverifiedSubmits } from "../services/bachatApi";
+import { changeOverall, createNotification, currentMonth, getAllNotifications, getOverall, getUnverifiedSubmits, unverifySubmission, verifySubmission, verifyUnsubmitted,reset as bachatReset } from "../services/bachatApi";
 import { acceptUser, deleteUser, getAllUsers, getMembers, reset, resetPassword } from "../services/userApi";
 
 //Icons import 
@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react";
 
 const Admintab = ({ tab }) => {
-  const { unverifiedSubmits, thisMonth,overall, isLoading } = useSelector((state) => state.bachat);
+  const { unverifiedSubmits, thisMonth,overall, isLoading, message:bachatMessage, isError:bachatError, isSuccess:bachatSuccess } = useSelector((state) => state.bachat);
   const { allUsers,profile,members, message, isError, isSuccess} = useSelector((state) => state.user)
   const totalSavings  = useRef()
   const totalFine = useRef()
@@ -25,11 +25,10 @@ const Admintab = ({ tab }) => {
   const notiDescription = useRef()
   const [submitted, setSubmitted] = useState([])
   const [unSubmitted, setUnSubmitted] = useState([])
+  const [monthId, setMonthId] = useState('')
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!unverifiedSubmits) {
-      dispatch(getUnverifiedSubmits());
-    }
+    
     if (!members) {
         if (getCookie("token")) {
           dispatch(getMembers());
@@ -46,9 +45,13 @@ const Admintab = ({ tab }) => {
   }, []);
 
   useEffect(()=>{
+    if (!unverifiedSubmits) {
+      dispatch(getUnverifiedSubmits());
+    }
     if(members && thisMonth){
         setUnSubmitted(members.filter(each=> !(thisMonth.collected.find(x=>x.user === each.id))))
-        setSubmitted(members.filter(each=> (thisMonth.collected.find(x=>(x.user === each.id && x.status === 'Verified') ))))
+        setSubmitted(thisMonth.collected.filter(x=>x.status === 'Verified'))
+        setMonthId(thisMonth._id)
     }
   },[members, thisMonth])
 
@@ -72,7 +75,29 @@ const Admintab = ({ tab }) => {
     return() =>clearTimeout(timer);
   
     
-  },[isError, isSuccess])
+  },[isError, isSuccess, message])
+
+  useEffect(()=>{
+    const timer = setTimeout(() => {
+      if(bachatError){
+        if(bachatMessage !== ''){
+          toast.error(bachatMessage)
+          setTimeout(()=>dispatch(bachatReset()), 500)
+        }
+      
+    }
+      if(bachatSuccess){
+        if(bachatMessage !== ''){
+          toast.success(bachatMessage)
+          setTimeout(()=>dispatch(bachatReset()),500)
+        }
+      
+    }
+    }, 500);
+    return() =>clearTimeout(timer);
+  
+    
+  },[bachatError, bachatSuccess, bachatMessage])
 
 
   const submitHandler = (e) =>{
@@ -93,6 +118,7 @@ const Admintab = ({ tab }) => {
     dispatch(changeOverall(data))
     toast.success('Savings information changed successfully')
   }
+
 
   const notificationHandler = (e) =>{
     e.preventDefault()
@@ -131,6 +157,33 @@ const Admintab = ({ tab }) => {
     setTimeout(()=>dispatch(getAllUsers()), 2000)
   }
 
+  const verifySubmitted = (id) =>{
+      dispatch(verifySubmission(id))
+      setTimeout(()=>dispatch(currentMonth()),1000)
+    setTimeout(()=>dispatch(getUnverifiedSubmits()),1000)
+      
+  }
+
+  const unverifySubmitted = (collectId) =>{
+    const data ={
+      monthId,
+      collectId
+    }
+      dispatch(unverifySubmission(data))
+      setTimeout(()=>dispatch(currentMonth()),1000)
+    setTimeout(()=>dispatch(getUnverifiedSubmits()),1000)
+  }
+
+  const verifyUnSubmitted = (id, name) =>{
+    const data = {
+      id: id,
+      name: name
+    }
+    dispatch(verifyUnsubmitted(data))
+    setTimeout(()=>dispatch(currentMonth()),1000)
+    setTimeout(()=>dispatch(getUnverifiedSubmits()),1000)
+  }
+
   return (
     <div className="p-4 bg-gray-100 rounded-md mt-4 mb-16 sm:mb-0">
         <ToastContainer 
@@ -163,10 +216,10 @@ const Admintab = ({ tab }) => {
                       </p>
                     </td>
                     <td className="p-2 flex flex-wrap flex-col sm:flex-row gap-2">
-                      <button className="bg-green-400 py-1 px-2 text-gray-100 rounded-md">
+                      <button disabled={isLoading} className="bg-green-400 py-1 px-2 text-gray-100 rounded-md"  onClick={()=>verifySubmitted(unit._id)}>
                         Verify
                       </button>
-                      <button className="bg-red-400 py-1 px-2 text-gray-100 rounded-md">
+                      <button disabled={isLoading} className="bg-red-400 py-1 px-2 text-gray-100 rounded-md" onClick={()=>unverifySubmitted(unit._id)}>
                         Unverify
                       </button>
                     </td>
@@ -187,7 +240,7 @@ const Admintab = ({ tab }) => {
                       </p>
                     </td>
                     <td className="p-2 flex flex-wrap flex-col sm:flex-row gap-2">
-                      <button className="bg-green-400 py-1 px-2 text-gray-100 rounded-md">
+                      <button disabled={isLoading} className="bg-green-400 py-1 px-2 text-gray-100 rounded-md" onClick={()=>verifyUnSubmitted(unit.id,unit.name)}>
                         Verify
                       </button>
                     </td>
@@ -209,7 +262,7 @@ const Admintab = ({ tab }) => {
                     </td>
                     <td className="p-2 flex flex-wrap flex-col sm:flex-row gap-2">
                       
-                      <button className="bg-red-400 py-1 px-2 text-gray-100 rounded-md">
+                      <button disabled={isLoading} className="bg-red-400 py-1 px-2 text-gray-100 rounded-md" onClick={()=>unverifySubmitted(unit._id)}>
                         Unverify
                       </button>
                     </td>

@@ -47,7 +47,7 @@ const Topnav = () => {
       </div>
 
       <div className="flex items-center mr-8 ">
-        <div className="mr-4 relative cursor-pointer" >
+        <div className="mr-4 relative cursor-pointer hidden sm:block" >
           <IoMdNotificationsOutline className="text-blue-400 text-xl 2xl:text-2xl" onClick={()=>{
             dispatch(notificationToggle(!notification))
             dispatch(settingToggle(false))
@@ -56,8 +56,8 @@ const Topnav = () => {
             dispatch(notificationToggle(!notification))
             dispatch(settingToggle(false))
         }} />
-          <div className={`${notification ? '': 'hidden'} z-20 transition-all ease-in-out duration-500 absolute bg-gray-100 right-[-180px] md:right-[-14px] top-[38px] p-2 w-80 rounded-md border-x border-b`}>
-            <div className="absolute right-44 md:right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
+          <div className={`${notification ? '': 'hidden'} z-20 transition-all ease-in-out duration-500 absolute bg-gray-100 right-[-14px] top-[38px] p-2 w-80 rounded-md border-x border-b`}>
+            <div className="absolute right-4 top-[-8px] border-b-8 border-l-transparent border-l-solid border-r-transparent border-r-solid border-r-8 border-l-8 border-gray-100"></div>
             <p className="text-gray-500 font-semibold">Notifications</p>
             <div className="h-[1px] bg-gray-200 w-full"></div>
             <ul>
