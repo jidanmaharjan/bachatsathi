@@ -56,7 +56,10 @@ function App() {
 
   useEffect(()=>{
     if(!getCookie('token')){
-      navigate('/')
+      if(pathname !== '/register'){
+        navigate('/')
+      }
+      
     }
   },[profile,isAuthenticated])
 
