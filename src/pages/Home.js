@@ -93,7 +93,7 @@ const Home = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 ">
                   <div className="border border-gray-200 rounded-md p-4">
                     <p className="text-gray-500 my-2 text-center">
-                      Deposit Time ends
+                      Deposit Deadline
                     </p>
                     <h1 className="text-5xl capitalize 2xl:text-6xl font-semibold text-red-400 text-center">{moment().startOf('month').add(27,'days').fromNow()}</h1>
                     <p className="text-red-400 text-center"></p>

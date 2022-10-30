@@ -39,7 +39,7 @@ const Members = () => {
       <h1 className="my-2 font-bold text-gray-600">MEMBERS</h1>
       <div className="p-4 rounded-md bg-gray-100">
         <div>
-          <div className="rounded-md">
+          <div className="rounded-md overflow-x-scroll">
             <table className="w-full rounded-md overflow-hidden ">
               <thead className="bg-blue-400 text-gray-100 font-semibold text-sm sm:text-md 2xl:text-lg">
                 <tr className="">

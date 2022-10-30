@@ -58,7 +58,7 @@ function App() {
     if(!getCookie('token')){
       navigate('/')
     }
-  },[profile])
+  },[profile,isAuthenticated])
 
   useEffect(() =>{
     const handleResize = () => setScreenSize(window.innerWidth);

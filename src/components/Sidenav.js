@@ -18,7 +18,7 @@ const Sidenav = () => {
     <div className={`fixed hidden sm:inline ${!side && 'translate-x-[-18rem] 2xl:translate-x-[-20rem]'} transition-transform duration-300 ease-in-out  z-50 w-72 2xl:w-80 min-h-screen p-2 bg-gray-100 mr-2 2xl:text-lg`}>
         <div className='w-40  mix-blend-multiply'><img src={logolight} alt="" /></div>
         <div className='mt-4 '>
-            <p className='text-gray-600'>NAVIGATION</p>
+            <p className='text-gray-600 font-semibold'>NAVIGATION</p>
             <div className='py-2 text-gray-800 '>
                 <NavLink to='/home' className={({isActive})=>isActive?activeLink:inactiveLink}><AiOutlineHome  size={20} />Home</NavLink>
                 {profile && profile.user.role !== 'user' && (
